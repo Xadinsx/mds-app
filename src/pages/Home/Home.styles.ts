@@ -3,7 +3,7 @@ import { Constants } from '../../Theme';
 const styles = (): any => ({
   root: {
     width: '100%',
-    height: '100%',
+    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden'
@@ -23,12 +23,13 @@ const styles = (): any => ({
     backgroundColor: Constants.colors.WarmBlue
   },
   content: {
-    height: 'calc(100vh - 100px)',
+    height: '100%',
     backgroundColor: Constants.colors.White,
     padding: '20px',
     paddingBottom: '0px',
     boxSizing: 'border-box',
-    overflow: 'scroll',
+    //overflow: 'scroll',
+    overflowX: 'hidden',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between'
@@ -51,7 +52,7 @@ const styles = (): any => ({
   leftBar: {
     backgroundColor: Constants.colors.WarmBlue,
     // calc com px dos paddings tomados
-    height: 'calc(100vh - 111px)',
+    // height: 'calc(100vh - 111px)',
     padding: 20,
     width: 200,
     boxShadow: '0 10px 30px 0 rgba(23, 78, 154, 0.1)'

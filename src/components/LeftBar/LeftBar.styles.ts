@@ -42,7 +42,7 @@ const styles = (): any => ({
   stepSeparator: {
     height: 40,
     backgroundColor: Constants.colors.White,
-    width: '1px',
+    width: '2px',
     alignSelf: 'center'
   },
   gridContainer: {

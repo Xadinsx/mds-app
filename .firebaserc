@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "mds-app-isec",
+    "staging": "mds-app-isec"
+  }
+}
