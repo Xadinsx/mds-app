@@ -1,14 +1,20 @@
 // React
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 // Router
 import { RouteComponentProps } from 'react-router-dom';
 
 // Material UI
-import { withStyles, Typography } from '@material-ui/core';
+import {
+  withStyles
+} from '@material-ui/core';
+import TopBar from '../../components/TopBar/TopBar';
+import pageStepsContent from '../../Utils/Content/PageStepsContent';
 
 // Styles
 import styles from './Home.styles';
+import Content from './Content/Content';
+import LeftBar from '../../components/LeftBar/LeftBar';
 
 interface Props extends RouteComponentProps {
   classes: any;
@@ -21,22 +27,31 @@ interface State {
 }
 
 const Home = ({ classes, title, content }: Props): JSX.Element => {
+  const [activeStep, setActiveStep] = useState(0);
+
+  const handleClickStep = (clickedStep: number): void => {
+    if (true) {
+      setActiveStep(clickedStep);
+    }
+  };
+
+  const progressStep = (activeStep / pageStepsContent.length) * 100;
+
   return (
     <div className={classes.root}>
-      <div className={classes.topBar}>
-        <Typography className={classes.topBarText}>
-          Managing Requirements, the Agile Way
-        </Typography>
-      </div>
-      <div className={classes.leftBarContainer}>
-        <div className={classes.leftBar}>
-          <Typography> barra</Typography>
-        </div>
-        <div className={classes.contentWrapper}>
-          <div className={classes.content}>
-            {!content ? <span>Empty</span> : content}
-          </div>
-        </div>
+      <TopBar progress={progressStep}/>
+      <div className={classes.contentContainer}>
+        {
+          //@ts-ignore
+          <LeftBar
+            activeStep={activeStep}
+            handleClickStep={handleClickStep}
+          />
+        }
+        <Content
+          setActiveStep={setActiveStep}
+          activeStep={activeStep}
+        />
       </div>
     </div>
   );
