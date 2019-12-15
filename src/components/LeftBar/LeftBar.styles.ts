@@ -4,8 +4,7 @@ import { width } from '@material-ui/system';
 const styles = (): any => ({
   leftBar: {
     backgroundColor: Constants.colors.WarmBlue,
-    // calc com px dos paddings tomados
-    height: 'calc(100vh - 111px)',
+    flexGrow: 1,
     padding: 20,
     width: 200,
     boxShadow: '0 10px 30px 0 rgba(23, 78, 154, 0.1)'
@@ -57,7 +56,10 @@ const styles = (): any => ({
     borderRadius: '50%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   textLabelContainer: {
     display: 'flex',

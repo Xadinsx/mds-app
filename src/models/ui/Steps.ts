@@ -1,4 +1,4 @@
-export interface pagesStep {
+export interface PagesStep {
   title: string;
   content: string;
   subtitle: string;

@@ -1,6 +1,6 @@
-import { pagesStep } from '../../models/ui/Steps';
+import { PagesStep } from '../../models/ui/Steps';
 
-export const pagesStepsContent: pagesStep[] = [
+const pageStepsContent: PagesStep[] = [
   {
     title: 'Fase 1',
     content:
@@ -55,3 +55,5 @@ export const pagesStepsContent: pagesStep[] = [
     ]
   }
 ];
+
+export default pageStepsContent;
