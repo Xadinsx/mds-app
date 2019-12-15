@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom';
 // Material UI
 import { withStyles, Typography, Grid } from '@material-ui/core';
 import pageStepsContent from '../../Utils/Content/PageStepsContent';
+import CookiesMenu from './CookiesMenu/CookiesMenu';
 
 // Styles
 import styles from './LeftBar.styles';
@@ -51,6 +52,9 @@ const LeftBar = ({
             </Grid>
           );
         })}
+      </Grid>
+      <Grid container>
+        <CookiesMenu/>
       </Grid>
     </div>
   );

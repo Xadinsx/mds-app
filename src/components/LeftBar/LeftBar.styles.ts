@@ -1,8 +1,10 @@
 import { Constants } from '../../Theme';
-import { width } from '@material-ui/system';
 
 const styles = (): any => ({
   leftBar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
     backgroundColor: Constants.colors.WarmBlue,
     flexGrow: 1,
     padding: 20,
