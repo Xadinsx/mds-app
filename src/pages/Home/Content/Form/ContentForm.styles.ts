@@ -9,6 +9,10 @@ const styles: () => any = (): any => {
       marginTop: 10,
       width: '70%',
       borderRadius: '20px'
+    },
+
+    errorRadio: {
+      color: 'red'
     }
   };
 };

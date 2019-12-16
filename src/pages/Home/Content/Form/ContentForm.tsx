@@ -71,13 +71,27 @@ const ContentForm = ({
                       <FormControlLabel
                         key={option.id}
                         value={option.id}
-                        control={<Radio color="primary" />}
+                        control={
+                          <Radio
+                            color="primary"
+                            className={
+                              hasBeenChecked &&
+                              !question.answer &&
+                              classes.errorRadio
+                            }
+                          />
+                        }
                         label={option.text}
                       />
                     );
                   }
                 )}
               </RadioGroup>
+              {hasBeenChecked && !question.answer && (
+                <Typography style={{ color: 'red' }}>
+                  Escolha uma opção por favor.
+                </Typography>
+              )}
             </div>
           );
         }
