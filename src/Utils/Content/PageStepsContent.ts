@@ -10,9 +10,24 @@ const pageStepsContent: PagesStep[] = [
       '1: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 2:Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 3: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne.',
     questions: [
       {
-        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?'
+        required: true,
+        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?',
+        answer: ''
       },
-      { text: 'Lorem ipsum dolor sit amet ?' }
+      { text: 'Lorem ipsum dolor sit amet ?', answer: '' },
+      {
+        required: true,
+        multiple: {
+          text: 'Qual o método a utilizar?',
+          options: [
+            { id: '0', text: 'Método A' },
+            { id: '1', text: 'Método B' },
+            { id: '2', text: 'Método C' },
+            { id: '3', text: 'Método D' }
+          ]
+        },
+        answer: ''
+      }
     ]
   },
   {
@@ -23,7 +38,23 @@ const pageStepsContent: PagesStep[] = [
     tips:
       '1: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 2:Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 3: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne.',
     questions: [
-      { text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?' }
+      {
+        required: true,
+        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?',
+        answer: ''
+      },
+      {
+        multiple: {
+          text: 'Qual o método a utilizar?',
+          options: [
+            { id: '0', text: 'Método A' },
+            { id: '1', text: 'Método B' },
+            { id: '2', text: 'Método C' },
+            { id: '3', text: 'Método D' }
+          ]
+        },
+        answer: ''
+      }
     ]
   },
   {
@@ -35,10 +66,17 @@ const pageStepsContent: PagesStep[] = [
       '1: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 2:Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 3: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne.',
     questions: [
       {
-        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?'
+        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?',
+        answer: ''
       },
-      { text: 'Lorem ipsum dolor sit amet ?' },
-      { text: 'Lorem ipsum dolor sit amet ?' }
+      {
+        text: 'Lorem ipsum dolor sit amet ?',
+        answer: ''
+      },
+      {
+        text: 'Lorem ipsum dolor sit amet ?',
+        answer: ''
+      }
     ]
   },
   {
@@ -50,7 +88,9 @@ const pageStepsContent: PagesStep[] = [
       '1: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 2:Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne. \n 3: Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque, te novum iudico nam. Eos amet laboramus ne.',
     questions: [
       {
-        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?'
+        required: true,
+        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?',
+        answer: ''
       }
     ]
   }

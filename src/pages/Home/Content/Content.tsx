@@ -9,35 +9,31 @@ import {
 import { PagesStep } from '../../../models/ui/Steps';
 
 import styles from './Content.styles';
-import pageStepsContent from '../../../Utils/Content/PageStepsContent';
+
 import ContentForm from './Form/ContentForm';
 
 interface ComponentProps {
   classes: any;
   setActiveStep: (stepIndex: number) => void;
   activeStep: number;
+  pageStepsContent: PagesStep[];
+  handleTextChange: (index: number, value: string) => void;
+  hasBeenChecked: boolean;
 }
 
-class Content extends Component<ComponentProps, any> {
-  render() {
-    const { classes }: ComponentProps = this.props;
-    return (
-      <div className={classes.contentWrapper}>
-        <div className={classes.content}>
-          {this.renderPageContent()}
-          {this.renderActionButtonsFooter()}
-        </div>
-      </div>
-    );
-  }
-
-  renderActionButtonsFooter = () => {
-    const { classes, activeStep }: ComponentProps = this.props;
-
+const Content = ({
+  classes,
+  activeStep,
+  setActiveStep,
+  pageStepsContent,
+  handleTextChange,
+  hasBeenChecked
+}: ComponentProps): JSX.Element => {
+  const renderActionButtonsFooter = () => {
     return (
       <div className={classes.actionButtons}>
         {activeStep >= 1 && activeStep <= pageStepsContent.length - 1 && (
-          <Button onClick={this.handleClickBack}>
+          <Button onClick={() => setActiveStep(activeStep - 1)}>
             <Typography>Retroceder</Typography>
           </Button>
         )}
@@ -45,7 +41,7 @@ class Content extends Component<ComponentProps, any> {
         {activeStep < pageStepsContent.length - 1 && (
           <>
             <div className={classes.buttonDivider} />
-            <Button onClick={this.handleClickContinue}>
+            <Button onClick={() => setActiveStep(activeStep + 1)}>
               <Typography>Continuar</Typography>
             </Button>
           </>
@@ -53,7 +49,7 @@ class Content extends Component<ComponentProps, any> {
         {activeStep === pageStepsContent.length - 1 && (
           <>
             <div className={classes.buttonDivider} />
-            <Button onClick={this.handleClickContinue}>
+            <Button onClick={() => setActiveStep(activeStep + 1)}>
               <Typography>Terminar</Typography>
             </Button>
           </>
@@ -62,8 +58,7 @@ class Content extends Component<ComponentProps, any> {
     );
   };
 
-  renderPageContent = () => {
-    const { classes, activeStep }: ComponentProps = this.props;
+  const renderPageContent = () => {
     const step: PagesStep = pageStepsContent[activeStep];
     if (step) {
       return (
@@ -87,7 +82,11 @@ class Content extends Component<ComponentProps, any> {
               {'Questões'}
             </Typography>
           </Grid>
-          <ContentForm step={step} />
+          <ContentForm
+            hasBeenChecked={hasBeenChecked}
+            handleTextChange={handleTextChange}
+            step={step}
+          />
         </Grid>
       );
     } else {
@@ -95,19 +94,14 @@ class Content extends Component<ComponentProps, any> {
     }
   };
 
-  handleClickContinue = () => {
-    if (true) {
-      this.setActiveStep(this.props.activeStep + 1);
-    }
-  };
-
-  handleClickBack = () => {
-    this.setActiveStep(this.props.activeStep - 1);
-  };
-
-  setActiveStep = (stepId: number) => {
-    this.props.setActiveStep(stepId);
-  };
-}
+  return (
+    <div className={classes.contentWrapper}>
+      <div className={classes.content}>
+        {renderPageContent()}
+        {renderActionButtonsFooter()}
+      </div>
+    </div>
+  );
+};
 
 export default withStyles(styles)(Content);
