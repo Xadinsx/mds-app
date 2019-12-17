@@ -65,6 +65,12 @@ const styles = (): any => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  hoverStep: {
+    '&:hover': {
+      boxShadow: '0 0 20px 0 rgba(23, 78, 154, 0.2)',
+      transform: 'scale(1.5)'
+    }
   }
 });
 
