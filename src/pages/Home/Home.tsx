@@ -54,6 +54,16 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
 
   const [activeStep, setActiveStep] = useState(activeStepFromCookie);
   const [pageStepsContentState, setPagesStepContent] = useState(pageStepsFromCookie);
+  const [progressStep, setProgressStep] = useState(0);
+
+  const updateProgressStep = () => {
+    const eachPhaseProgress: number = 100 / pageStepsContentState.length;
+    const progress: number = activeStep * eachPhaseProgress + pageStepsContentState[activeStep]
+        .questions.filter((question: any) => !!question.answer).length *
+      (eachPhaseProgress / pageStepsContentState[activeStep].questions.length);
+    const progressRound: string = progress.toPrecision(2);
+    setProgressStep(+progressRound);
+  };
 
   const [hasBeenChecked, setHasBeenChecked] = useState(false);
 
@@ -97,8 +107,6 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
     setActiveStep(0);
   };
 
-  const progressStep = (activeStep / pageStepsContent.length) * 100;
-
   return (
     <div className={classes.root}>
       <TopBar progress={progressStep}/>
@@ -119,6 +127,7 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
           setActiveStep={handleClickStep}
           activeStep={activeStep}
           hasBeenChecked={hasBeenChecked}
+          updateProgressStep={updateProgressStep}
         />
       </div>
     </div>
