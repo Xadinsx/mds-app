@@ -1,7 +1,7 @@
 // React
 import React from 'react';
 import { Router } from 'react-router-dom';
-import { CookiesProvider } from 'react-cookie';
+import { CookiesProvider, ReactCookieProps, withCookies } from 'react-cookie';
 
 // Material UI
 import { MuiThemeProvider } from '@material-ui/core';
@@ -15,14 +15,14 @@ import Routes from './Utils/Routes/Routes';
 // Logged in routes
 
 /* This is our App entry */
-const App = (): JSX.Element => {
+const App = (cookies: ReactCookieProps): JSX.Element => {
   return (
     <MuiThemeProvider theme={Theme}>
       <CookiesProvider>
-        <Router history={History}>{Routes()}</Router>
+        <Router history={History}>{Routes(cookies)}</Router>
       </CookiesProvider>
     </MuiThemeProvider>
   );
 };
 
-export default App;
+export default withCookies(App);

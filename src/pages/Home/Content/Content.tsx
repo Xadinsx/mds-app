@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import {
   Button,
   Grid,
-  LinearProgress,
-  TextField,
   Typography,
   withStyles
 } from '@material-ui/core';
