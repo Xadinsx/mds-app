@@ -1,5 +1,6 @@
 // React
 import React from 'react';
+import { ReactCookieProps } from 'react-cookie';
 
 // Router
 import { RouteComponentProps } from 'react-router-dom';
@@ -18,13 +19,19 @@ interface Props extends RouteComponentProps {
   classes: any;
   activeStep: number;
   handleClickStep: (clickedStep: number) => void;
+  cookies: ReactCookieProps;
+  pageStepsContentState: PagesStep[];
+  resetPagesStepContent: () => void;
 }
 
 const LeftBar = ({
-  classes,
-  handleClickStep,
-  activeStep
-}: Props): JSX.Element => {
+                   classes,
+                   handleClickStep,
+                   activeStep,
+                   cookies,
+                   pageStepsContentState,
+                   resetPagesStepContent
+                 }: Props): JSX.Element => {
   return (
     <div className={classes.leftBar}>
       <Grid container className={classes.stepsContainer}>
@@ -40,7 +47,7 @@ const LeftBar = ({
                   onClick={(): void => handleClickStep(index)}
                 >
                   {index + 1 <= activeStep ? (
-                    <Check color="primary" />
+                    <Check color="primary"/>
                   ) : (
                     <Typography className={classes.stepNumberText}>
                       {index + 1}
@@ -63,7 +70,11 @@ const LeftBar = ({
         })}
       </Grid>
       <Grid container>
-        <CookiesMenu/>
+        <CookiesMenu {...cookies}
+                     pageStepsContentState={pageStepsContentState}
+                     resetPagesStepContent={resetPagesStepContent}
+                     activeStep={activeStep}
+        />
       </Grid>
     </div>
   );
