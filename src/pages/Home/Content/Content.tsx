@@ -19,17 +19,20 @@ interface ComponentProps {
   pageStepsContent: PagesStep[];
   handleTextChange: (index: number, value: string) => void;
   hasBeenChecked: boolean;
+  updateProgressStep: () => void;
 }
 
 const Content = ({
-  classes,
-  activeStep,
-  setActiveStep,
-  pageStepsContent,
-  handleTextChange,
-  hasBeenChecked
-}: ComponentProps): JSX.Element => {
+                   classes,
+                   activeStep,
+                   setActiveStep,
+                   pageStepsContent,
+                   handleTextChange,
+                   hasBeenChecked,
+                   updateProgressStep
+                 }: ComponentProps): JSX.Element => {
   const renderActionButtonsFooter = () => {
+    updateProgressStep();
     return (
       <div className={classes.actionButtons}>
         {activeStep >= 1 && activeStep <= pageStepsContent.length - 1 && (
@@ -40,7 +43,7 @@ const Content = ({
 
         {activeStep < pageStepsContent.length - 1 && (
           <>
-            <div className={classes.buttonDivider} />
+            <div className={classes.buttonDivider}/>
             <Button onClick={() => setActiveStep(activeStep + 1)}>
               <Typography>Continuar</Typography>
             </Button>
@@ -48,7 +51,7 @@ const Content = ({
         )}
         {activeStep === pageStepsContent.length - 1 && (
           <>
-            <div className={classes.buttonDivider} />
+            <div className={classes.buttonDivider}/>
             <Button onClick={() => setActiveStep(activeStep + 1)}>
               <Typography>Terminar</Typography>
             </Button>
@@ -90,7 +93,7 @@ const Content = ({
         </Grid>
       );
     } else {
-      return <div />;
+      return <div/>;
     }
   };
 
