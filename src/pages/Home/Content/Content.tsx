@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { ReactCookieProps } from 'react-cookie';
 
-import { PagesStep } from '../../../models/ui/Steps';
+import { PagesStep, DynamicQuestionType } from '../../../models/ui/Steps';
 import { convertToPageStepsCookie } from '../../../Utils/Content/PageStepsCookie.model';
 
 import styles from './Content.styles';
@@ -21,9 +21,11 @@ interface ComponentProps {
   setActiveStep: (stepIndex: number) => boolean;
   activeStep: number;
   pageStepsContent: PagesStep[];
-  handleTextChange: (index: number, value: string) => void;
+  handleAnswerChange: (index: number, value: any, prop?:string) => void;
   hasBeenChecked: boolean;
   updateProgressStep: () => void;
+  addQuestion: (questionIndex: number, type: DynamicQuestionType) => void;
+  removeQuestion: (questionIndex: number) => void;
   cookies: any;
 }
 
@@ -32,11 +34,14 @@ const Content = ({
                    activeStep,
                    setActiveStep,
                    pageStepsContent,
-                   handleTextChange,
+                   handleAnswerChange,
                    hasBeenChecked,
                    updateProgressStep,
+                   addQuestion,
+                   removeQuestion,
                    cookies
                  }: ComponentProps): JSX.Element => {
+
   const handleContinuarClick = () => {
     const changedStep: boolean = setActiveStep(activeStep + 1);
 
@@ -44,6 +49,10 @@ const Content = ({
       const encodedCookie: string = new Buffer(JSON.stringify(convertToPageStepsCookie(pageStepsContent, activeStep + 1))).toString('base64');
       cookies.set('app-state', { state: encodedCookie });
     }
+  };
+
+  const handleTerminarClick = () => {
+    handleContinuarClick();
   };
 
   const renderActionButtonsFooter = () => {
@@ -68,7 +77,7 @@ const Content = ({
         {activeStep === pageStepsContent.length - 1 && (
           <>
             <div className={classes.buttonDivider} />
-            <Button onClick={() => setActiveStep(activeStep + 1)}>
+            <Button onClick={handleTerminarClick}>
               <Typography>Terminar</Typography>
             </Button>
           </>
@@ -107,7 +116,9 @@ const Content = ({
           </Grid>
           <ContentForm
             hasBeenChecked={hasBeenChecked}
-            handleTextChange={handleTextChange}
+            handleAnswerChange={handleAnswerChange}
+            addQuestion={addQuestion}
+            removeQuestion={removeQuestion}
             step={step}
           />
         </Grid>

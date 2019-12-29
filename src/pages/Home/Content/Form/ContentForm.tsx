@@ -10,29 +10,66 @@ import {
   Radio
 } from '@material-ui/core';
 
-import { PagesStep } from '../../../../models/ui/Steps';
+import {
+  createEmptySelectItem,
+  FeatureQuestionModel,
+  PagesStep,
+  DynamicQuestionModel,
+  DynamicQuestionType,
+  QuestionModel, RequirementQuestionModel,
+  SelectItemModel
+} from '../../../../models/ui/Steps';
 import styles from './ContentForm.styles';
+import FeatureQuestion from './FeatureQuestion';
+import RequirementQuestion from './RequirementQuestion';
+import UserStoryQuestion from './UserStoryQuestion';
 
 interface ContentFormProps {
   classes: any;
   step: PagesStep;
-  handleTextChange: (index: number, value: string) => void;
+  handleAnswerChange: (index: number, value: any, prop?: string) => void;
+  addQuestion: (questionIndex: number, type: DynamicQuestionType) => void;
+  removeQuestion: (questionIndex: number) => void;
   hasBeenChecked: boolean;
 }
 
 const ContentForm = ({
-  classes,
-  step,
-  handleTextChange,
-  hasBeenChecked
-}: ContentFormProps): JSX.Element => {
+                       classes,
+                       step,
+                       handleAnswerChange,
+                       hasBeenChecked,
+                       addQuestion,
+                       removeQuestion
+                     }: ContentFormProps): JSX.Element => {
+  let qDynamicCount: number [] = [0, 0, 0];
+  const featuresSelectList: SelectItemModel[] = [createEmptySelectItem()];
+  const requirementsSelectList: SelectItemModel[] = [createEmptySelectItem()];
+
+  step.questions.forEach((question: QuestionModel | DynamicQuestionModel, index: number) => {
+    const qDynamic: DynamicQuestionModel = (question as DynamicQuestionModel);
+
+    if (qDynamic.type === 'Feature') {
+      qDynamicCount[0]++;
+      qDynamic.num = qDynamicCount[0];
+      featuresSelectList.push({ index, name: `F${qDynamic.num}` });
+    } else if (qDynamic.type === 'Requirement') {
+      qDynamicCount[1]++;
+      qDynamic.num = qDynamicCount[1];
+      requirementsSelectList.push({ index, name: `R${qDynamic.num}` });
+    } else if (qDynamic.type === 'UserStory') {
+      qDynamicCount[2]++;
+      qDynamic.num = qDynamicCount[2];
+    }
+  });
+
   return (
     <Grid item xs={12}>
       {step.questions.map((question: any, index: number) => {
         if (question.text) {
           return (
             <div key={index} className={classes.questionContainer}>
-              <Typography>{question.text}</Typography>
+              <Typography>{question.text}{question.required ?
+                <span className={classes.requiredLabelSpan}>*</span> : ''}</Typography>
               <TextField
                 key={question.text}
                 error={
@@ -40,7 +77,7 @@ const ContentForm = ({
                     ? question.required && question.answer === ''
                     : false
                 }
-                onChange={event => handleTextChange(index, event.target.value)}
+                onChange={event => handleAnswerChange(index, event.target.value)}
                 className={classes.questionInput}
                 value={question.answer}
                 id="outlined-basic"
@@ -56,13 +93,13 @@ const ContentForm = ({
         } else if (question.multiple) {
           return (
             <div key={index} className={classes.questionContainer}>
-              <Typography>{question.multiple.text}</Typography>
+              <Typography className={classes.requiredLabel}>{question.multiple.text}</Typography>
               <RadioGroup
                 aria-label=""
                 name={`question${index}`}
                 value={question.answer}
                 onChange={(event): void =>
-                  handleTextChange(index, event.target.value)
+                  handleAnswerChange(index, event.target.value)
                 }
               >
                 {question.multiple.options.map(
@@ -94,6 +131,35 @@ const ContentForm = ({
               )}
             </div>
           );
+        } else if (question.type) {
+          switch (question.type) {
+            case 'Feature':
+              return <FeatureQuestion
+                key={index}
+                question={question}
+                addQuestion={() => addQuestion(index, question.type)}
+                removeQuestion={() => removeQuestion(index)}
+                handleAnswerChange={(value: any, prop: string) => handleAnswerChange(index, value, prop)}
+              />;
+            case 'Requirement':
+              return <RequirementQuestion
+                key={index}
+                question={question}
+                addQuestion={() => addQuestion(index, question.type)}
+                removeQuestion={() => removeQuestion(index)}
+                handleAnswerChange={(value: any, prop: string) => handleAnswerChange(index, value, prop)}
+                featuresSelectList={featuresSelectList}
+              />;
+            default:
+              return <UserStoryQuestion
+                key={index}
+                question={question}
+                addQuestion={() => addQuestion(index, question.type)}
+                removeQuestion={() => removeQuestion(index)}
+                handleAnswerChange={(value: any, prop: string) => handleAnswerChange(index, value, prop)}
+                requirementsSelectList={requirementsSelectList}
+              />;
+          }
         }
       })}
     </Grid>

@@ -1,4 +1,11 @@
-import { PagesStep } from '../../models/ui/Steps';
+import { EMSGSIZE } from 'constants';
+import {
+  EMPTY_SELECT_ITEM_INDEX,
+  FeatureQuestionModel,
+  PagesStep,
+  RequirementQuestionModel,
+  UserStoryQuestionModel
+} from '../../models/ui/Steps';
 
 const pageStepsContent: PagesStep[] = [
   {
@@ -106,11 +113,30 @@ Outputs:\n
     questions: [
       {
         required: true,
-        text: 'Lorem ipsum dolor sit amet, at usu stet vocibus cotidieque ?',
+        number: true,
+        text: 'Quantas sprints considera necessárias?',
         answer: ''
-      }
+      },
+      {
+        type: 'Feature',
+        description: '',
+      } as FeatureQuestionModel,
+      {
+        type: 'Requirement',
+        description: '',
+        feature: EMPTY_SELECT_ITEM_INDEX
+      } as RequirementQuestionModel,
+      {
+        type: 'UserStory',
+        action: '',
+        actor: '',
+        goal: '',
+        requirement: EMPTY_SELECT_ITEM_INDEX
+      } as UserStoryQuestionModel
     ]
   }
 ];
+
+export const REQUIREMENTS_PHASE_INDEX = 3;
 
 export default pageStepsContent;
