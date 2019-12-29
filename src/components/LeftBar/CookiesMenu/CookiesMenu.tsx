@@ -1,107 +1,66 @@
-import React, { Component } from 'react';
-import { cloneDeep } from 'lodash';
+import React from 'react';
 
-import { Button, ListItemIcon, ListItemText, Menu, withStyles } from '@material-ui/core';
+import { Button, Modal, withStyles } from '@material-ui/core';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
-import SaveIcon from '@material-ui/icons/Save';
 
-import { PagesStep } from '../../../models/ui/Steps';
-import pageStepsContent from '../../../Utils/Content/PageStepsContent';
-import { convertToPageStepsCookie } from '../../../Utils/Content/PageStepsCookie.model';
 import styles from './CookiesMenu.styles';
 
 interface CookiesMenuProps {
   classes: any;
-  pageStepsContentState: PagesStep[];
   resetPagesStepContent: () => void;
-  activeStep: number;
 }
 
-class CookiesMenu extends Component<any & CookiesMenuProps> {
-  state = {
-    anchorEl: null
+const CookiesMenu = (props: any & CookiesMenuProps) => {
+  const { classes } = props;
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  setAnchorEl = (el: any) => this.setState({ ...this.state, anchorEl: el });
-
-  handleClick = (event: any) => {
-    this.setAnchorEl(event.currentTarget);
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  handleClose = () => {
-    this.setAnchorEl(null);
-  };
-
-  handleSaveToCookies = () => {
-    if (this.props.cookies) {
-      const encodedCookie: string = new Buffer(JSON.stringify(convertToPageStepsCookie(this.props.pageStepsContentState, this.props.activeStep))).toString('base64');
-      this.props.cookies.set('app-state', {state: encodedCookie});
+  const handleOk = () => {
+    if (props.cookies) {
+      props.cookies.remove('app-state');
+      props.resetPagesStepContent();
     }
-    this.handleClose();
+    setOpen(false);
   };
 
-  handleClearCookiesAndResetState = () => {
-    if (this.props.cookies) {
-      this.props.cookies.remove('app-state');
-      this.props.resetPagesStepContent();
-    }
-    this.handleClose();
-  };
-
-  render() {
-    const { anchorEl }: any = this.state;
-    const { classes } = this.props;
-
-    const MenuPopup = (
-      <Menu
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={this.handleClose}
-        className={classes.listContainer}
-      >
-        <div className={classes.listItemWrapper} onClick={this.handleSaveToCookies}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <SaveIcon fontSize="small"/>
-          </ListItemIcon>
-          <ListItemText>Guardar Estado</ListItemText>
-        </div>
-        <div className={classes.listItemWrapper} onClick={this.handleClearCookiesAndResetState}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <RotateLeftIcon fontSize="small"/>
-          </ListItemIcon>
-          <ListItemText>Recomeçar</ListItemText>
-        </div>
-      </Menu>
-    );
-
-    return (
+  return (
+    <div>
       <div className={classes.openMenuButtonContainer}>
         <Button
-          aria-controls="customized-menu"
-          aria-haspopup="true"
           variant="contained"
           color="primary"
-          onClick={this.handleClick}
+          onClick={handleOpen}
           className={classes.openMenuButton}
         >
-          Menu
+          <RotateLeftIcon fontSize="small"/><span>Recomeçar</span>
         </Button>
-        {MenuPopup}
       </div>
-    );
-  }
-}
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <div className={classes.modal}>
+          <h2 id="simple-modal-title">Recomeçar Progresso</h2>
+          <p id="simple-modal-description">
+            Tem a certeza que pretende continuar? O seu progresso atual será perdido.
+          </p>
+          <div className={classes.modalButtons}>
+            <Button color="primary" onClick={handleClose}>Cancelar</Button>
+            <Button color="primary" onClick={handleOk}>Ok</Button>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+};
 
 export default withStyles(styles)(CookiesMenu);

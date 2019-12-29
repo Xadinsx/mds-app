@@ -6,7 +6,9 @@ import {
   Typography,
   withStyles
 } from '@material-ui/core';
+import { ReactCookieProps } from 'react-cookie';
 import { PagesStep } from '../../../models/ui/Steps';
+import { convertToPageStepsCookie } from '../../../Utils/Content/PageStepsCookie.model';
 
 import styles from './Content.styles';
 
@@ -14,12 +16,13 @@ import ContentForm from './Form/ContentForm';
 
 interface ComponentProps {
   classes: any;
-  setActiveStep: (stepIndex: number) => void;
+  setActiveStep: (stepIndex: number) => boolean;
   activeStep: number;
   pageStepsContent: PagesStep[];
   handleTextChange: (index: number, value: string) => void;
   hasBeenChecked: boolean;
   updateProgressStep: () => void;
+  cookies: any;
 }
 
 const Content = ({
@@ -29,8 +32,17 @@ const Content = ({
                    pageStepsContent,
                    handleTextChange,
                    hasBeenChecked,
-                   updateProgressStep
+                   updateProgressStep,
+                   cookies
                  }: ComponentProps): JSX.Element => {
+  const handleContinuarClick = () => {
+    const changedStep: boolean = setActiveStep(activeStep + 1);
+
+    if (changedStep && cookies) {
+      const encodedCookie: string = new Buffer(JSON.stringify(convertToPageStepsCookie(pageStepsContent, activeStep + 1))).toString('base64');
+      cookies.set('app-state', { state: encodedCookie });
+    }
+  };
   const renderActionButtonsFooter = () => {
     updateProgressStep();
     return (
@@ -44,7 +56,7 @@ const Content = ({
         {activeStep < pageStepsContent.length - 1 && (
           <>
             <div className={classes.buttonDivider}/>
-            <Button onClick={() => setActiveStep(activeStep + 1)}>
+            <Button onClick={handleContinuarClick}>
               <Typography>Continuar</Typography>
             </Button>
           </>
