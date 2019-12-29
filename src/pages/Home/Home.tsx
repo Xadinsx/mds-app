@@ -55,19 +55,33 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
   const [activeStep, setActiveStep] = useState(activeStepFromCookie);
   const [pageStepsContentState, setPagesStepContent] = useState(pageStepsFromCookie);
   const [progressStep, setProgressStep] = useState(0);
+  let maxActiveStep: number = activeStep;
 
   const updateProgressStep = () => {
     const eachPhaseProgress: number = 100 / pageStepsContentState.length;
-    const progress: number = activeStep * eachPhaseProgress + pageStepsContentState[activeStep]
-        .questions.filter((question: any) => !!question.answer).length *
-      (eachPhaseProgress / pageStepsContentState[activeStep].questions.length);
+    let progress: number = 0;
+
+    for (let i: number = 0; i < pageStepsContentState.length; i++) {
+      const activeStepRequiredQuestions: any[] = pageStepsContentState[i].questions
+        .filter((question: any) => question.required);
+      const eachQuestionProgress = eachPhaseProgress / activeStepRequiredQuestions.length;
+
+      if (!activeStepRequiredQuestions || !activeStepRequiredQuestions.length) {
+        progress += maxActiveStep >= i ? eachPhaseProgress : 0;
+        continue;
+      }
+
+      progress += eachQuestionProgress * activeStepRequiredQuestions
+        .filter((question: any) => !!question.answer).length;
+    }
+
     const progressRound: string = progress.toPrecision(2);
     setProgressStep(+progressRound);
   };
 
   const [hasBeenChecked, setHasBeenChecked] = useState(false);
 
-  const handleClickStep = (clickedStep: number): void => {
+  const handleClickStep = (clickedStep: number): boolean => {
     let validation = true;
     activeStep >= 0 &&
     activeStep <= pageStepsContentState.length - 1 &&
@@ -92,6 +106,9 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
       setHasBeenChecked(false);
       setActiveStep(clickedStep);
     }
+
+    maxActiveStep = activeStep > maxActiveStep ? activeStep : maxActiveStep;
+    return validation;
   };
 
   const handleTextChange = (index: number, value: string): void => {
@@ -125,6 +142,7 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
           handleTextChange={handleTextChange}
           pageStepsContent={pageStepsContentState}
           setActiveStep={handleClickStep}
+          cookies={cookies.cookies}
           activeStep={activeStep}
           hasBeenChecked={hasBeenChecked}
           updateProgressStep={updateProgressStep}

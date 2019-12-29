@@ -71,9 +71,7 @@ const LeftBar = ({
       </Grid>
       <Grid container>
         <CookiesMenu {...cookies}
-                     pageStepsContentState={pageStepsContentState}
                      resetPagesStepContent={resetPagesStepContent}
-                     activeStep={activeStep}
         />
       </Grid>
     </div>
