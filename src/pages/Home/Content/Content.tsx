@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 
-import {
-  Button,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core';
+import { Button, Grid, Typography, withStyles } from '@material-ui/core';
 import { PagesStep } from '../../../models/ui/Steps';
 
 import styles from './Content.styles';
@@ -23,14 +18,14 @@ interface ComponentProps {
 }
 
 const Content = ({
-                   classes,
-                   activeStep,
-                   setActiveStep,
-                   pageStepsContent,
-                   handleTextChange,
-                   hasBeenChecked,
-                   updateProgressStep
-                 }: ComponentProps): JSX.Element => {
+  classes,
+  activeStep,
+  setActiveStep,
+  pageStepsContent,
+  handleTextChange,
+  hasBeenChecked,
+  updateProgressStep
+}: ComponentProps): JSX.Element => {
   const renderActionButtonsFooter = () => {
     updateProgressStep();
     return (
@@ -43,7 +38,7 @@ const Content = ({
 
         {activeStep < pageStepsContent.length - 1 && (
           <>
-            <div className={classes.buttonDivider}/>
+            <div className={classes.buttonDivider} />
             <Button onClick={() => setActiveStep(activeStep + 1)}>
               <Typography>Continuar</Typography>
             </Button>
@@ -51,7 +46,7 @@ const Content = ({
         )}
         {activeStep === pageStepsContent.length - 1 && (
           <>
-            <div className={classes.buttonDivider}/>
+            <div className={classes.buttonDivider} />
             <Button onClick={() => setActiveStep(activeStep + 1)}>
               <Typography>Terminar</Typography>
             </Button>
@@ -70,7 +65,9 @@ const Content = ({
             <Typography className={classes.titleText}>{step.title}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography>{step.content}</Typography>
+            <Typography style={{ whiteSpace: 'pre-wrap' }}>
+              {step.content}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography className={classes.subtitleText}>
@@ -78,7 +75,9 @@ const Content = ({
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography>{step.tips}</Typography>
+            <Typography style={{ whiteSpace: 'pre-wrap' }}>
+              {step.tips}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography className={classes.subtitleText}>
@@ -93,7 +92,7 @@ const Content = ({
         </Grid>
       );
     } else {
-      return <div/>;
+      return <div />;
     }
   };
 
