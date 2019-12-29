@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+
 import {
   Button,
   Grid,
@@ -7,6 +8,7 @@ import {
   withStyles
 } from '@material-ui/core';
 import { ReactCookieProps } from 'react-cookie';
+
 import { PagesStep } from '../../../models/ui/Steps';
 import { convertToPageStepsCookie } from '../../../Utils/Content/PageStepsCookie.model';
 
@@ -43,6 +45,7 @@ const Content = ({
       cookies.set('app-state', { state: encodedCookie });
     }
   };
+
   const renderActionButtonsFooter = () => {
     updateProgressStep();
     return (
@@ -57,13 +60,14 @@ const Content = ({
           <>
             <div className={classes.buttonDivider}/>
             <Button onClick={handleContinuarClick}>
+
               <Typography>Continuar</Typography>
             </Button>
           </>
         )}
         {activeStep === pageStepsContent.length - 1 && (
           <>
-            <div className={classes.buttonDivider}/>
+            <div className={classes.buttonDivider} />
             <Button onClick={() => setActiveStep(activeStep + 1)}>
               <Typography>Terminar</Typography>
             </Button>
@@ -82,7 +86,9 @@ const Content = ({
             <Typography className={classes.titleText}>{step.title}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography>{step.content}</Typography>
+            <Typography style={{ whiteSpace: 'pre-wrap' }}>
+              {step.content}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography className={classes.subtitleText}>
@@ -90,7 +96,9 @@ const Content = ({
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography>{step.tips}</Typography>
+            <Typography style={{ whiteSpace: 'pre-wrap' }}>
+              {step.tips}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography className={classes.subtitleText}>
@@ -105,7 +113,7 @@ const Content = ({
         </Grid>
       );
     } else {
-      return <div/>;
+      return <div />;
     }
   };
 
