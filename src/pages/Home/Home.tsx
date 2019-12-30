@@ -55,7 +55,7 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
   const [activeStep, setActiveStep] = useState(activeStepFromCookie);
   const [pageStepsContentState, setPagesStepContent] = useState(pageStepsFromCookie);
   const [progressStep, setProgressStep] = useState(0);
-  let maxActiveStep: number = activeStep;
+  const [maxActiveStep, setMaxActiveStep] = useState(activeStep);
 
   const updateProgressStep = () => {
     const eachPhaseProgress: number = 100 / pageStepsContentState.length;
@@ -107,7 +107,7 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
       setActiveStep(clickedStep);
     }
 
-    maxActiveStep = activeStep > maxActiveStep ? activeStep : maxActiveStep;
+    setMaxActiveStep(clickedStep > maxActiveStep ? clickedStep : maxActiveStep);
     return validation;
   };
 
@@ -122,6 +122,7 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
   const resetPagesStepContent = (): void => {
     setPagesStepContent(cloneDeep(pageStepsContent));
     setActiveStep(0);
+    setMaxActiveStep(0);
   };
 
   return (
@@ -132,9 +133,9 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
           //@ts-ignore
           <LeftBar
             activeStep={activeStep}
+            maxActiveStep={maxActiveStep}
             handleClickStep={handleClickStep}
             cookies={cookies}
-            pageStepsContentState={pageStepsContentState}
             resetPagesStepContent={resetPagesStepContent}
           />
         }
