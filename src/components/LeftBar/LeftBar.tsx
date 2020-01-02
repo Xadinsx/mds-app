@@ -1,5 +1,5 @@
 // React
-import React, { useState } from 'react';
+import React from 'react';
 import { ReactCookieProps } from 'react-cookie';
 
 // Router
@@ -25,14 +25,14 @@ interface Props extends RouteComponentProps {
 }
 
 const LeftBar = ({
-                   classes,
-                   handleClickStep,
-                   activeStep,
-                   cookies,
-                   maxActiveStep,
-                   resetPagesStepContent
-                 }: Props): JSX.Element => {
-  console.log(maxActiveStep)
+  classes,
+  handleClickStep,
+  activeStep,
+  cookies,
+  maxActiveStep,
+  resetPagesStepContent
+}: Props): JSX.Element => {
+  console.log(maxActiveStep);
   return (
     <div className={classes.leftBar}>
       <Grid container className={classes.stepsContainer}>
@@ -46,10 +46,12 @@ const LeftBar = ({
                     index < maxActiveStep && classes.hoverStep,
                     index > maxActiveStep ? classes.blocked : ''
                   ].join(' ')}
-                  onClick={(): void | null => index > maxActiveStep ? null : handleClickStep(index)}
+                  onClick={(): void | null =>
+                    index > maxActiveStep ? null : handleClickStep(index)
+                  }
                 >
                   {index < maxActiveStep ? (
-                    <Check color="primary"/>
+                    <Check color="primary" />
                   ) : (
                     <Typography className={classes.stepNumberText}>
                       {index + 1}
@@ -63,7 +65,14 @@ const LeftBar = ({
                 </Typography>
               </Grid>
               {index !== pageStepsContent.length - 1 && (
-                <Grid item xs={6} className={[classes.separatorContainer, index > maxActiveStep ? classes.blocked : ''].join(' ')}>
+                <Grid
+                  item
+                  xs={6}
+                  className={[
+                    classes.separatorContainer,
+                    index > maxActiveStep ? classes.blocked : ''
+                  ].join(' ')}
+                >
                   <div className={classes.stepSeparator}></div>
                 </Grid>
               )}
@@ -72,8 +81,9 @@ const LeftBar = ({
         })}
       </Grid>
       <Grid container>
-        <CookiesMenu {...cookies}
-                     resetPagesStepContent={resetPagesStepContent}
+        <CookiesMenu
+          {...cookies}
+          resetPagesStepContent={resetPagesStepContent}
         />
       </Grid>
     </div>

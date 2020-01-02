@@ -10,7 +10,14 @@ import {
   withStyles
 } from '@material-ui/core';
 import TopBar from '../../components/TopBar/TopBar';
-import { PagesStep } from '../../models/ui/Steps';
+import {
+  createEmptyDynamicQuestion,
+  EMPTY_SELECT_ITEM_INDEX,
+  PagesStep,
+  DynamicQuestionModel,
+  DynamicQuestionType,
+  QuestionModel, RequirementQuestionModel, UserStoryQuestionModel
+} from '../../models/ui/Steps';
 import pageStepsContent from '../../Utils/Content/PageStepsContent';
 import { convertFromPageStepsCookie } from '../../Utils/Content/PageStepsCookie.model';
 
@@ -111,10 +118,10 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
     return validation;
   };
 
-  const handleTextChange = (index: number, value: string): void => {
+  const handleAnswerChange = (index: number, value: any, prop: string = 'answer'): void => {
     const pageStepsContentCopy = cloneDeep(pageStepsContentState);
 
-    pageStepsContentCopy[activeStep].questions[index].answer = value;
+    (pageStepsContentCopy[activeStep].questions[index] as any)[prop] = value;
 
     setPagesStepContent(pageStepsContentCopy);
   };
@@ -123,6 +130,41 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
     setPagesStepContent(cloneDeep(pageStepsContent));
     setActiveStep(0);
     setMaxActiveStep(0);
+  };
+
+  const handleAddQuestion = (questionIndex: number, type: DynamicQuestionType) => {
+    const pageStepsContentClone: PagesStep[] = cloneDeep(pageStepsContentState);
+
+    pageStepsContentClone[activeStep].questions.splice(questionIndex + 1, 0, createEmptyDynamicQuestion(type));
+
+    setPagesStepContent(pageStepsContentClone);
+  };
+
+  const handleRemoveQuestion = (questionIndex: number) => {
+    const pageStepsContentClone: PagesStep[] = cloneDeep(pageStepsContentState);
+    const question: DynamicQuestionModel = pageStepsContentClone[activeStep].questions[questionIndex] as DynamicQuestionModel;
+
+    if (question.type === 'Feature' || question.type === 'Requirement') {
+      pageStepsContentClone[activeStep].questions.forEach((q: QuestionModel | DynamicQuestionModel) => {
+        const qDynamic = q as DynamicQuestionModel;
+
+        if (qDynamic.type === 'Requirement' && question.type === 'Feature') {
+          const qRequirement = qDynamic as RequirementQuestionModel;
+          if (qRequirement.feature === questionIndex) {
+            qRequirement.feature = EMPTY_SELECT_ITEM_INDEX;
+          }
+        } else if (qDynamic.type === 'UserStory' && question.type === 'Requirement') {
+          const qUserStory = qDynamic as UserStoryQuestionModel;
+          if (qUserStory.requirement === questionIndex) {
+            qUserStory.requirement = EMPTY_SELECT_ITEM_INDEX;
+          }
+        }
+      });
+    }
+
+    pageStepsContentClone[activeStep].questions.splice(questionIndex, 1);
+
+    setPagesStepContent(pageStepsContentClone);
   };
 
   return (
@@ -140,13 +182,15 @@ const Home = ({ classes, cookies }: Props): JSX.Element => {
           />
         }
         <Content
-          handleTextChange={handleTextChange}
+          handleAnswerChange={handleAnswerChange}
           pageStepsContent={pageStepsContentState}
           setActiveStep={handleClickStep}
           cookies={cookies.cookies}
           activeStep={activeStep}
           hasBeenChecked={hasBeenChecked}
           updateProgressStep={updateProgressStep}
+          addQuestion={handleAddQuestion}
+          removeQuestion={handleRemoveQuestion}
         />
       </div>
     </div>
