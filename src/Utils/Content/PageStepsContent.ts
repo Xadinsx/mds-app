@@ -1,4 +1,3 @@
-import { EMSGSIZE } from 'constants';
 import {
   EMPTY_SELECT_ITEM_INDEX,
   FeatureQuestionModel,
@@ -119,7 +118,7 @@ Outputs:\n
       },
       {
         type: 'Feature',
-        description: '',
+        description: ''
       } as FeatureQuestionModel,
       {
         type: 'Requirement',

@@ -63,6 +63,13 @@ const styles = (): any => ({
       cursor: 'pointer'
     }
   },
+  blocked: {
+    cursor: 'not-allowed',
+    opacity: 0.2,
+    '&:hover': {
+      cursor: 'not-allowed'
+    }
+  },
   textLabelContainer: {
     display: 'flex',
     justifyContent: 'center',

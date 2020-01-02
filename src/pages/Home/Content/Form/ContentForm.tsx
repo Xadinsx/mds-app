@@ -12,11 +12,10 @@ import {
 
 import {
   createEmptySelectItem,
-  FeatureQuestionModel,
   PagesStep,
   DynamicQuestionModel,
   DynamicQuestionType,
-  QuestionModel, RequirementQuestionModel,
+  QuestionModel,
   SelectItemModel
 } from '../../../../models/ui/Steps';
 import styles from './ContentForm.styles';
@@ -34,33 +33,35 @@ interface ContentFormProps {
 }
 
 const ContentForm = ({
-                       classes,
-                       step,
-                       handleAnswerChange,
-                       hasBeenChecked,
-                       addQuestion,
-                       removeQuestion
-                     }: ContentFormProps): JSX.Element => {
-  let qDynamicCount: number [] = [0, 0, 0];
+  classes,
+  step,
+  handleAnswerChange,
+  hasBeenChecked,
+  addQuestion,
+  removeQuestion
+}: ContentFormProps): JSX.Element => {
+  let qDynamicCount: number[] = [0, 0, 0];
   const featuresSelectList: SelectItemModel[] = [createEmptySelectItem()];
   const requirementsSelectList: SelectItemModel[] = [createEmptySelectItem()];
 
-  step.questions.forEach((question: QuestionModel | DynamicQuestionModel, index: number) => {
-    const qDynamic: DynamicQuestionModel = (question as DynamicQuestionModel);
+  step.questions.forEach(
+    (question: QuestionModel | DynamicQuestionModel, index: number) => {
+      const qDynamic: DynamicQuestionModel = question as DynamicQuestionModel;
 
-    if (qDynamic.type === 'Feature') {
-      qDynamicCount[0]++;
-      qDynamic.num = qDynamicCount[0];
-      featuresSelectList.push({ index, name: `F${qDynamic.num}` });
-    } else if (qDynamic.type === 'Requirement') {
-      qDynamicCount[1]++;
-      qDynamic.num = qDynamicCount[1];
-      requirementsSelectList.push({ index, name: `R${qDynamic.num}` });
-    } else if (qDynamic.type === 'UserStory') {
-      qDynamicCount[2]++;
-      qDynamic.num = qDynamicCount[2];
+      if (qDynamic.type === 'Feature') {
+        qDynamicCount[0]++;
+        qDynamic.num = qDynamicCount[0];
+        featuresSelectList.push({ index, name: `F${qDynamic.num}` });
+      } else if (qDynamic.type === 'Requirement') {
+        qDynamicCount[1]++;
+        qDynamic.num = qDynamicCount[1];
+        requirementsSelectList.push({ index, name: `R${qDynamic.num}` });
+      } else if (qDynamic.type === 'UserStory') {
+        qDynamicCount[2]++;
+        qDynamic.num = qDynamicCount[2];
+      }
     }
-  });
+  );
 
   return (
     <Grid item xs={12}>
@@ -68,8 +69,14 @@ const ContentForm = ({
         if (question.text) {
           return (
             <div key={index} className={classes.questionContainer}>
-              <Typography>{question.text}{question.required ?
-                <span className={classes.requiredLabelSpan}>*</span> : ''}</Typography>
+              <Typography>
+                {question.text}
+                {question.required ? (
+                  <span className={classes.requiredLabelSpan}>*</span>
+                ) : (
+                  ''
+                )}
+              </Typography>
               <TextField
                 key={question.text}
                 error={
@@ -77,7 +84,9 @@ const ContentForm = ({
                     ? question.required && question.answer === ''
                     : false
                 }
-                onChange={event => handleAnswerChange(index, event.target.value)}
+                onChange={event =>
+                  handleAnswerChange(index, event.target.value)
+                }
                 className={classes.questionInput}
                 value={question.answer}
                 id="outlined-basic"
@@ -93,7 +102,9 @@ const ContentForm = ({
         } else if (question.multiple) {
           return (
             <div key={index} className={classes.questionContainer}>
-              <Typography className={classes.requiredLabel}>{question.multiple.text}</Typography>
+              <Typography className={classes.requiredLabel}>
+                {question.multiple.text}
+              </Typography>
               <RadioGroup
                 aria-label=""
                 name={`question${index}`}
@@ -134,31 +145,43 @@ const ContentForm = ({
         } else if (question.type) {
           switch (question.type) {
             case 'Feature':
-              return <FeatureQuestion
-                key={index}
-                question={question}
-                addQuestion={() => addQuestion(index, question.type)}
-                removeQuestion={() => removeQuestion(index)}
-                handleAnswerChange={(value: any, prop: string) => handleAnswerChange(index, value, prop)}
-              />;
+              return (
+                <FeatureQuestion
+                  key={index}
+                  question={question}
+                  addQuestion={() => addQuestion(index, question.type)}
+                  removeQuestion={() => removeQuestion(index)}
+                  handleAnswerChange={(value: any, prop: string) =>
+                    handleAnswerChange(index, value, prop)
+                  }
+                />
+              );
             case 'Requirement':
-              return <RequirementQuestion
-                key={index}
-                question={question}
-                addQuestion={() => addQuestion(index, question.type)}
-                removeQuestion={() => removeQuestion(index)}
-                handleAnswerChange={(value: any, prop: string) => handleAnswerChange(index, value, prop)}
-                featuresSelectList={featuresSelectList}
-              />;
+              return (
+                <RequirementQuestion
+                  key={index}
+                  question={question}
+                  addQuestion={() => addQuestion(index, question.type)}
+                  removeQuestion={() => removeQuestion(index)}
+                  handleAnswerChange={(value: any, prop: string) =>
+                    handleAnswerChange(index, value, prop)
+                  }
+                  featuresSelectList={featuresSelectList}
+                />
+              );
             default:
-              return <UserStoryQuestion
-                key={index}
-                question={question}
-                addQuestion={() => addQuestion(index, question.type)}
-                removeQuestion={() => removeQuestion(index)}
-                handleAnswerChange={(value: any, prop: string) => handleAnswerChange(index, value, prop)}
-                requirementsSelectList={requirementsSelectList}
-              />;
+              return (
+                <UserStoryQuestion
+                  key={index}
+                  question={question}
+                  addQuestion={() => addQuestion(index, question.type)}
+                  removeQuestion={() => removeQuestion(index)}
+                  handleAnswerChange={(value: any, prop: string) =>
+                    handleAnswerChange(index, value, prop)
+                  }
+                  requirementsSelectList={requirementsSelectList}
+                />
+              );
           }
         }
       })}

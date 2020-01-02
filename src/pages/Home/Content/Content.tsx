@@ -1,13 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-
-import {
-  Button,
-  Grid,
-  Typography,
-  withStyles
-} from '@material-ui/core';
-import { ReactCookieProps } from 'react-cookie';
+import { Button, Grid, Typography, withStyles } from '@material-ui/core';
 
 import { PagesStep, DynamicQuestionType } from '../../../models/ui/Steps';
 import { convertToPageStepsCookie } from '../../../Utils/Content/PageStepsCookie.model';
@@ -21,7 +14,7 @@ interface ComponentProps {
   setActiveStep: (stepIndex: number) => boolean;
   activeStep: number;
   pageStepsContent: PagesStep[];
-  handleAnswerChange: (index: number, value: any, prop?:string) => void;
+  handleAnswerChange: (index: number, value: any, prop?: string) => void;
   hasBeenChecked: boolean;
   updateProgressStep: () => void;
   addQuestion: (questionIndex: number, type: DynamicQuestionType) => void;
@@ -30,23 +23,26 @@ interface ComponentProps {
 }
 
 const Content = ({
-                   classes,
-                   activeStep,
-                   setActiveStep,
-                   pageStepsContent,
-                   handleAnswerChange,
-                   hasBeenChecked,
-                   updateProgressStep,
-                   addQuestion,
-                   removeQuestion,
-                   cookies
-                 }: ComponentProps): JSX.Element => {
-
+  classes,
+  activeStep,
+  setActiveStep,
+  pageStepsContent,
+  handleAnswerChange,
+  hasBeenChecked,
+  updateProgressStep,
+  addQuestion,
+  removeQuestion,
+  cookies
+}: ComponentProps): JSX.Element => {
   const handleContinuarClick = () => {
     const changedStep: boolean = setActiveStep(activeStep + 1);
 
     if (changedStep && cookies) {
-      const encodedCookie: string = new Buffer(JSON.stringify(convertToPageStepsCookie(pageStepsContent, activeStep + 1))).toString('base64');
+      const encodedCookie: string = new Buffer(
+        JSON.stringify(
+          convertToPageStepsCookie(pageStepsContent, activeStep + 1)
+        )
+      ).toString('base64');
       cookies.set('app-state', { state: encodedCookie });
     }
   };
@@ -67,9 +63,8 @@ const Content = ({
 
         {activeStep < pageStepsContent.length - 1 && (
           <>
-            <div className={classes.buttonDivider}/>
+            <div className={classes.buttonDivider} />
             <Button onClick={handleContinuarClick}>
-
               <Typography>Continuar</Typography>
             </Button>
           </>
