@@ -26,7 +26,12 @@ import UserStoryQuestion from './UserStoryQuestion';
 interface ContentFormProps {
   classes: any;
   step: PagesStep;
-  handleAnswerChange: (index: number, value: any, prop?: string) => void;
+  handleAnswerChange: (
+    index: number,
+    value: any,
+    prop?: string,
+    depthId?: string
+  ) => void;
   addQuestion: (questionIndex: number, type: DynamicQuestionType) => void;
   removeQuestion: (questionIndex: number) => void;
   hasBeenChecked: boolean;
@@ -62,6 +67,120 @@ const ContentForm = ({
       }
     }
   );
+
+  const renderOptionSubQuestions = (
+    subQuestions: any,
+    questionDepthId: string
+  ) => {
+    return subQuestions.map((question: any, index: number) => {
+      if (question.text) {
+        return (
+          <div key={index} className={classes.questionContainer}>
+            <Typography>
+              {question.text}
+              {question.required ? (
+                <span className={classes.requiredLabelSpan}>*</span>
+              ) : (
+                ''
+              )}
+            </Typography>
+            <TextField
+              key={question.text}
+              error={
+                hasBeenChecked
+                  ? question.required && question.answer === ''
+                  : false
+              }
+              onChange={event =>
+                handleAnswerChange(
+                  index,
+                  event.target.value,
+                  undefined,
+                  questionDepthId || ''
+                )
+              }
+              className={classes.questionInput}
+              value={question.answer}
+              id="outlined-basic"
+              label={`Questão ${index + 1}`}
+              variant="outlined"
+              multiline
+              required={question.required}
+              rows={4}
+              rowsMax={4}
+            />
+          </div>
+        );
+      } else if (question.multiple) {
+        return (
+          <div key={index} className={classes.questionContainer}>
+            <Typography className={classes.requiredLabel}>
+              {question.multiple.text}
+            </Typography>
+            <RadioGroup
+              aria-label=""
+              name={`question${index}`}
+              value={question.answer}
+              onChange={(event): void =>
+                handleAnswerChange(
+                  index,
+                  event.target.value,
+                  undefined,
+                  event.target.id || ''
+                )
+              }
+            >
+              {question.multiple.options.map(
+                (option: { id: string; text: string }) => {
+                  return (
+                    <FormControlLabel
+                      key={option.id}
+                      value={option.id}
+                      control={
+                        <Radio
+                          color="primary"
+                          className={
+                            hasBeenChecked &&
+                            !question.answer &&
+                            classes.errorRadio
+                          }
+                        />
+                      }
+                      label={option.text}
+                    />
+                  );
+                }
+              )}
+            </RadioGroup>
+            {hasBeenChecked && !question.answer && (
+              <Typography style={{ color: 'red' }}>
+                Escolha uma opção por favor.
+              </Typography>
+            )}
+            {question.multiple &&
+              question.answer !== '' &&
+              question.multiple.options.map(
+                (option: {
+                  id: string;
+                  text: string;
+                  subQuestions: any;
+                  depthId: string;
+                }) => {
+                  return (
+                    option.id === question.answer &&
+                    option.subQuestions &&
+                    renderOptionSubQuestions(
+                      option.subQuestions,
+                      option.depthId || ''
+                    )
+                  );
+                }
+              )}
+          </div>
+        );
+      }
+    });
+  };
 
   return (
     <Grid item xs={12}>
@@ -140,6 +259,25 @@ const ContentForm = ({
                   Escolha uma opção por favor.
                 </Typography>
               )}
+              {question.multiple &&
+                question.answer !== '' &&
+                question.multiple.options.map(
+                  (option: {
+                    id: string;
+                    text: string;
+                    subQuestions: any;
+                    depthId: string;
+                  }) => {
+                    return (
+                      option.id === question.answer &&
+                      option.subQuestions &&
+                      renderOptionSubQuestions(
+                        option.subQuestions,
+                        option.depthId || ''
+                      )
+                    );
+                  }
+                )}
             </div>
           );
         } else if (question.type) {

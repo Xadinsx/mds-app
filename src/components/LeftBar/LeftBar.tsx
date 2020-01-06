@@ -54,14 +54,14 @@ const LeftBar = ({
                     <Check color="primary" />
                   ) : (
                     <Typography className={classes.stepNumberText}>
-                      {index + 1}
+                      {index}
                     </Typography>
                   )}
                 </div>
               </Grid>
               <Grid item xs={6} className={classes.textLabelContainer}>
                 <Typography className={classes.stepNumberTextWhite}>
-                  {`Fase ${index + 1}`}
+                  {`Fase ${index}`}
                 </Typography>
               </Grid>
               {index !== pageStepsContent.length - 1 && (
