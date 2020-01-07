@@ -94,16 +94,20 @@ const Content = ({
               {step.content}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <Typography className={classes.subtitleText}>
-              {step.subtitle}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography style={{ whiteSpace: 'pre-wrap' }}>
-              {step.tips}
-            </Typography>
-          </Grid>
+          {step.subtitle && step.tips && (
+            <>
+              <Grid item xs={12}>
+                <Typography className={classes.subtitleText}>
+                  {step.subtitle}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography style={{ whiteSpace: 'pre-wrap' }}>
+                  {step.tips}
+                </Typography>
+              </Grid>
+            </>
+          )}
           <Grid item xs={12}>
             <Typography className={classes.subtitleText}>
               {'Questões'}
