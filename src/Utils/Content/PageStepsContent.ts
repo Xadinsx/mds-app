@@ -68,54 +68,9 @@ Sprint Backlog: A Sprint Backlog consiste no conjunto de items do Product Backlo
               depthId: 'ramoAtividade',
               subQuestions: [
                 {
-                  multiple: {
-                    depthId: 'ramoAtividade',
-                    text: 'Ramo de atividade da Organização?',
-                    options: [
-                      {
-                        id: 'produtosProduz',
-                        text: 'Industria',
-                        depthId: 'produtosProduz',
-                        subQuestions: [
-                          {
-                            required: true,
-                            depthId: 'produtosProduz',
-                            text:
-                              'Quais os tipos de Produtos que a sua organização produz?',
-                            answer: ''
-                          }
-                        ]
-                      },
-                      {
-                        id: 'produtosComecializa',
-                        text: 'Comércio',
-                        depthId: 'produtosComercializa',
-                        subQuestions: [
-                          {
-                            required: true,
-                            depthId: 'produtosComercializa',
-                            text:
-                              'Quais os tipos de Produtos que a sua organização comercializa?',
-                            answer: ''
-                          }
-                        ]
-                      },
-                      {
-                        id: 'servicosFornece',
-                        text: 'Serviço',
-                        depthId: 'servicosFornece',
-                        subQuestions: [
-                          {
-                            required: true,
-                            depthId: 'servicosFornece',
-                            text:
-                              'Quais os tipos de Produtos que a sua organização Fornece?',
-                            answer: ''
-                          }
-                        ]
-                      }
-                    ]
-                  },
+                  required: true,
+                  depthId: 'fazOrganizacao',
+                  text: 'Qual o ramo em que a sua organização trabalha?',
                   answer: ''
                 }
               ]

@@ -27,6 +27,7 @@ import Content from './Content/Content';
 import LeftBar from '../../components/LeftBar/LeftBar';
 
 import { cloneDeep } from 'lodash';
+import { ExportToCsv } from 'export-to-csv';
 
 interface Props extends RouteComponentProps {
   classes: any;
