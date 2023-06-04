@@ -1,19 +1,27 @@
 export interface PagesStep {
   title: string;
   content: string;
-  subtitle: string;
+  subtitle?: string;
 
-  tips: string;
+  tips?: string;
   questions: (QuestionModel | DynamicQuestionModel)[];
 }
 
 export interface QuestionModel {
   required?: boolean;
   number?: boolean;
+  id?: string;
+  depthId?: string;
   text?: string;
   multiple?: {
     text: string;
-    options: { id: string; text: string }[];
+    depthId?: string;
+    options: {
+      id: string;
+      text: string;
+      depthId?: string;
+      subQuestions?: QuestionModel[];
+    }[];
   };
   answer: string;
 }
@@ -45,7 +53,9 @@ export interface UserStoryQuestionModel extends DynamicQuestionModel {
   requirement: number; // question index
 }
 
-export function createEmptyDynamicQuestion(type: DynamicQuestionType): DynamicQuestionModel {
+export function createEmptyDynamicQuestion(
+  type: DynamicQuestionType
+): DynamicQuestionModel {
   switch (type) {
     case 'Feature':
       return {

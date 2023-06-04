@@ -8,6 +8,8 @@ import { convertToPageStepsCookie } from '../../../Utils/Content/PageStepsCookie
 import styles from './Content.styles';
 
 import ContentForm from './Form/ContentForm';
+import { ExportToCsv } from 'export-to-csv';
+import Iframe from 'react-iframe';
 
 interface ComponentProps {
   classes: any;
@@ -47,8 +49,48 @@ const Content = ({
     }
   };
 
+  const options = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    showTitle: true,
+    title: 'My Awesome CSV',
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: true
+  };
+
+  const csvExporter = new ExportToCsv(options);
+
   const handleTerminarClick = () => {
     handleContinuarClick();
+
+    const dataToExport: any = [];
+
+    pageStepsContent.forEach(step => {
+      step.questions.map((question: any) => {
+        if (question.multiple) {
+          dataToExport.push({
+            title: question.multiple.text,
+            answer: question.multiple.options[parseInt(question.answer)]
+              ? question.multiple.options[parseInt(question.answer)].text
+              : ''
+          });
+        } else {
+          if (question.answer) {
+            dataToExport.push({
+              title: question.text,
+              answer: question.answer
+            });
+          }
+        }
+      });
+    });
+
+    if (activeStep + 1 === pageStepsContent.length) {
+      csvExporter.generateCsv(JSON.stringify(dataToExport));
+    }
   };
 
   const renderActionButtonsFooter = () => {
@@ -94,16 +136,20 @@ const Content = ({
               {step.content}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <Typography className={classes.subtitleText}>
-              {step.subtitle}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography style={{ whiteSpace: 'pre-wrap' }}>
-              {step.tips}
-            </Typography>
-          </Grid>
+          {step.subtitle && step.tips && (
+            <>
+              <Grid item xs={12}>
+                <Typography className={classes.subtitleText}>
+                  {step.subtitle}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography style={{ whiteSpace: 'pre-wrap' }}>
+                  {step.tips}
+                </Typography>
+              </Grid>
+            </>
+          )}
           <Grid item xs={12}>
             <Typography className={classes.subtitleText}>
               {'Questões'}
@@ -119,7 +165,22 @@ const Content = ({
         </Grid>
       );
     } else {
-      return <div />;
+      return (
+        <div style={{ height: '100%' }}>
+          <Typography className={classes.subtitleText}>
+            Partilhe o seu relatório:{' '}
+          </Typography>
+          <Iframe
+            url="https://send-anywhere.com/"
+            width="100%"
+            height="90%"
+            id="myId"
+            className="myClassname"
+            display="inline"
+            position="relative"
+          />
+        </div>
+      );
     }
   };
 
